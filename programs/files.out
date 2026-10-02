@@ -1,0 +1,19 @@
+writing notes
+the file has 23 bytes
+it starts with: first line
+
+the file holds 3 lines
+  1. first line
+  2. second line
+  3. third line
+
+it holds 'second': true
+it holds 'missing': false
+
+report says: lines=3 first=first line
+exists before: true
+removed: true
+exists after: false
+removing it again: false
+
+done

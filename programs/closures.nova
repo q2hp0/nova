@@ -1,0 +1,123 @@
+function makeCounter(start) {
+    let value = start;
+
+    function step(by) {
+        value = value + by;
+        return value;
+    }
+
+    function peek() {
+        return value;
+    }
+
+    return {step: step, peek: peek};
+}
+
+let counter = makeCounter(10);
+
+counter.step(5);
+counter.step(2);
+
+print("counter:", counter.peek());
+
+let other = makeCounter(0);
+other.step(100);
+
+print("counters are independent:", counter.peek(), "and", other.peek());
+
+function memoize(fn) {
+    let cache = {};
+
+    return function(n) {
+        let key = str(n);
+
+        if cache.contains(key) {
+            return cache[key];
+        }
+
+        let answer = fn(n);
+        cache[key] = answer;
+
+        return answer;
+    };
+}
+
+let slowSquare = memoize(function(n) {
+    return n * n;
+});
+
+print("");
+print(slowSquare(9));
+print(slowSquare(9));
+print(slowSquare(12));
+
+function compose(first, second) {
+    return function(value) {
+        return second(first(value));
+    };
+}
+
+let shout = compose(
+    function(text) { return text + "!"; },
+    function(text) { return text.upper(); }
+);
+
+print("");
+print(shout("nova"));
+
+function applyAll(values, fn) {
+    let out = [];
+
+    for (let value in values) {
+        out.push(fn(value));
+    }
+
+    return out;
+}
+
+print("applyAll:", applyAll([1, 2, 3], function(x) {
+    return x * 10;
+}).join(" "));
+
+let functionList = [];
+
+for (let i = 1; i <= 3; i = i + 1) {
+    functionList.push(function() {
+        return i;
+    });
+}
+
+print("each closure keeps its own counter:", functionList.map(function(f) {
+    return f();
+}).join(" "));
+
+function fib(n) {
+    if n < 2 {
+        return n;
+    }
+
+    return fib(n - 1) + fib(n - 2);
+}
+
+print("");
+print("fib(20):", fib(20));
+
+function fact(n, acc) {
+    if n <= 1 {
+        return acc;
+    }
+
+    return fact(n - 1, acc * n);
+}
+
+print("fact(10):", fact(10, 1));
+
+function deep(n) {
+    if n == 0 {
+        return "bottom";
+    }
+
+    return deep(n - 1);
+}
+
+print("deep(500):", deep(500));

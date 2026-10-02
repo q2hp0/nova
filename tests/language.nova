@@ -1,0 +1,713 @@
+let passed = 0;
+let failed = 0;
+
+function check(name, actual, expected) {
+    if (actual == expected) {
+        passed = passed + 1;
+        return;
+    }
+
+    failed = failed + 1;
+    print("FAILED", name, "got", actual, "expected", expected);
+}
+
+function checkTrue(name, actual) {
+    check(name, actual, true);
+}
+
+function checkFalse(name, actual) {
+    check(name, actual, false);
+}
+
+check("number", 42, 42);
+check("negative", -7, -7);
+check("float", 1.5 + 1.5, 3);
+check("precedence", 2 + 3 * 4, 14);
+check("parens", (2 + 3) * 4, 20);
+check("division", 9 / 2, 4.5);
+check("modulo", 9 % 4, 1);
+check("unary minus", -3 + 1, -2);
+
+let total = 2;
+total += 3;
+check("plus assign", total, 5);
+total -= 1;
+check("minus assign", total, 4);
+total *= 3;
+check("times assign", total, 12);
+total /= 2;
+check("divide assign", total, 6);
+total %= 4;
+check("modulo assign", total, 2);
+
+check("string concat", "no" + "va", "nova");
+check("string and number", "value = " + 5, "value = 5");
+check("escape newline", len("a\nb"), 3);
+check("escape quote", len("a\"b"), 3);
+check("escape tab", len("a\tb"), 3);
+check("string index", "nova"[0], "n");
+check("string length", len("nova"), 4);
+check("string compare", "a" < "b", true);
+
+checkTrue("true value", true);
+checkFalse("false value", false);
+check("nil truthiness", nil || false, false);
+check("nil equals nil", nil == nil, true);
+check("null is nil", null == nil, true);
+
+check("and", true and 2 < 3, true);
+check("or", false or 2 < 3, true);
+check("not", not false, true);
+check("bang not", !false, true);
+
+let branch = 0;
+if 1 > 2 {
+    branch = 1;
+} else if 2 > 1 {
+    branch = 2;
+} else {
+    branch = 3;
+}
+check("else if", branch, 2);
+
+let loops = 0;
+while loops < 5 {
+    loops = loops + 1;
+}
+check("while", loops, 5);
+
+let skipped = 0;
+let visited = 0;
+while visited < 6 {
+    visited = visited + 1;
+
+    if visited == 3 {
+        continue;
+    }
+
+    if visited == 5 {
+        break;
+    }
+
+    skipped = skipped + 1;
+}
+check("continue and break", skipped, 3);
+
+let series = 0;
+for (let i = 1; i <= 4; i = i + 1) {
+    series = series + i;
+}
+check("for loop", series, 10);
+
+let infiniteGuard = 0;
+for (;;) {
+    infiniteGuard = infiniteGuard + 1;
+
+    if infiniteGuard == 3 {
+        break;
+    }
+}
+check("for without condition", infiniteGuard, 3);
+
+function add(a, b) {
+    return a + b;
+}
+
+check("function call", add(2, 3), 5);
+check("nested calls", add(add(1, 2), add(3, 4)), 10);
+
+function factorial(n) {
+    if n <= 1 {
+        return 1;
+    }
+
+    return n * factorial(n - 1);
+}
+
+check("recursion", factorial(5), 120);
+
+function applyTwice(fn, value) {
+    return fn(fn(value));
+}
+
+check(
+    "higher order",
+    applyTwice(function(x) { return x * 3; }, 2),
+    18
+);
+
+function makeCounter() {
+    let total = 0;
+
+    function step(amount) {
+        total = total + amount;
+        return total;
+    }
+
+    return step;
+}
+
+let counter = makeCounter();
+counter(2);
+counter(3);
+check("closure state", counter(1), 6);
+
+let other = makeCounter();
+check("independent closures", other(5), 5);
+check("closures do not share", counter(0), 6);
+
+let numbers = [3, 1, 2];
+check("list length", numbers.len(), 3);
+check("list index", numbers[0], 3);
+
+numbers.push(4);
+check("list push", numbers.len(), 4);
+check("list pop", numbers.pop(), 4);
+numbers.insert(0, 9);
+check("list insert", numbers[0], 9);
+check("list remove", numbers.remove(9), true);
+check("list indexOf", numbers.indexOf(2), 2);
+check("list contains", numbers.contains(1), true);
+check("list join", numbers.join(","), "3,1,2");
+check("list slice", numbers.slice(1).join("-"), "1-2");
+check("list first", numbers.first(), 3);
+check("list last", numbers.last(), 2);
+check("list reverse", numbers.reverse().join("-"), "2-1-3");
+
+numbers[0] = 30;
+check("list assignment", numbers[0], 30);
+
+let copy = numbers.copy();
+copy.push(99);
+check("list copy is deep enough", numbers.len(), 3);
+
+check(
+    "list map",
+    numbers.map(function(x) { return x + 1; }).join(" "),
+    "31 2 3"
+);
+
+check(
+    "list filter",
+    numbers.filter(function(x) { return x > 2; }).join(" "),
+    "30"
+);
+
+check(
+    "list filter keeps several",
+    numbers.filter(function(x) { return x > 1; }).len(),
+    2
+);
+
+check(
+    "list reduce",
+    numbers.reduce(function(total, x) { return total + x; }, 0),
+    33
+);
+
+check(
+    "list sort",
+    numbers.sort().join(" "),
+    "1 2 30"
+);
+
+check(
+    "list each",
+    numbers.each(function(x) { } ) == nil,
+    true
+);
+
+let words = ["alpha", "beta"];
+check("string method upper", words[0].upper(), "ALPHA");
+check("string method split", "a,b,c".split(",").len(), 3);
+check("string method join result", "a-b".split("-").join("+"), "a+b");
+check("string method contains", "nova".contains("ov"), true);
+check("string method replace", "nova".replace("a", "a!"), "nova!");
+check("string method trim", "  x  ".trim(), "x");
+check("string method substring", "abcdef".substring(1, 3), "bc");
+check("string method chars", "abc".chars().len(), 3);
+check("string method repeat", "ab".repeat(2), "abab");
+check("string method indexOf", "nova".indexOf("v"), 2);
+
+let data = {"name": "nova", "size": 4};
+check("map length", data.len(), 2);
+check("map get", data["name"], "nova");
+check("map missing key", data["nope"], nil);
+data["extra"] = true;
+check("map set", data["extra"], true);
+check("map contains", data.contains("size"), true);
+data.remove("extra");
+check("map remove", data.len(), 2);
+check("map keys", data.keys().join(","), "name,size");
+check("map values len", data.values().len(), 2);
+check("map len method", data.size(), 2);
+checkTrue("map values are usable", data.values().indexOf(4) >= 0);
+
+check("str of number", str(12), "12");
+check("num of string", num("12"), 12);
+check("bool of zero", bool(0), true);
+check("bool of nil", bool(nil), false);
+check("bool of list", bool([1]), true);
+check("type of string", type("a"), "string");
+check("type of number", type(1), "number");
+check("type of list", type([]), "list");
+check("type of map", type({}), "map");
+check("type of nil", type(nil), "nil");
+check("type of bool", type(true), "bool");
+check("type of function", type(print), "function");
+
+check("abs", abs(-3), 3);
+check("floor", floor(2.7), 2);
+check("ceil", ceil(2.1), 3);
+check("round", round(2.5), 3);
+check("sqrt", sqrt(16), 4);
+check("pow", pow(2, 10), 1024);
+check("min", min(3, 1, 2), 1);
+check("max", max(3, 1, 2), 3);
+check("sum", sum([1, 2, 3]), 6);
+check("range", range(3).join("-"), "0-1-2");
+check("range step", range(1, 5, 2).join("-"), "1-3");
+
+let shadow = "outer";
+{
+    let shadow = "inner";
+    check("block shadowing", shadow, "inner");
+}
+check("outer value survives", shadow, "outer");
+
+let loopTotal = 0;
+for (let value in [1, 2, 3]) {
+    loopTotal = loopTotal + value;
+}
+check("for in list", loopTotal, 6);
+
+let letters = "";
+for (let letter in "abc") {
+    letters = letters + letter;
+}
+check("for in string", letters, "abc");
+
+checkTrue("assert passes", true);
+assert(1 == 1, "one equals one");
+
+let branch = "";
+
+if 1 > 2 {
+    branch = "wrong";
+} else {
+    branch = "right";
+}
+check("if else takes the else branch", branch, "right");
+
+let chain = "";
+
+if false {
+    chain = "first";
+} else if true {
+    chain = "second";
+} else {
+    chain = "third";
+}
+check("else if chain", chain, "second");
+
+let nested = "";
+
+if true {
+    if false {
+        nested = "inner then";
+    } else {
+        nested = "inner else";
+    }
+} else {
+    nested = "outer else";
+}
+check("nested if else", nested, "inner else");
+
+let plain = 0;
+if true {
+    plain = 1;
+}
+if false {
+    plain = 99;
+}
+check("if without else keeps the stack clean", plain, 1);
+
+let afterBranch = 5;
+if afterBranch > 1 {
+    afterBranch = afterBranch + 1;
+} else {
+    afterBranch = 0;
+}
+check("value after if else", afterBranch, 6);
+
+let closures = [];
+for (let i = 1; i <= 3; i = i + 1) {
+    closures.push(function() { return i; });
+}
+check(
+    "loop variable is fresh each turn",
+    closures.map(function(f) { return f(); }).join(","),
+    "1,2,3"
+);
+
+let shared = 0;
+for (let j = 0; j < 3; j = j + 1) {
+    shared = shared + 1;
+}
+check("plain loop after closures", shared, 3);
+
+let table = {"a": 1};
+table.b = 2;
+check("property assignment", table["b"], 2);
+check("property read", table.a, 1);
+check("missing property is nil", table.nothing == nil, true);
+table.a = 9;
+check("property overwrite", table.a, 9);
+check("keys keep first use order", table.keys().join(","), "a,b");
+
+let counter = {
+    value: 0,
+    add: function(by) {
+        this_value = by;
+        return counter.value + this_value;
+    }
+};
+check("map method call", counter.add(5), 5);
+
+let flipped = [1, 2, 3].reverse();
+check("reverse returns a new list", flipped.join(","), "3,2,1");
+
+let trace = [];
+
+function label(n) {
+    switch n {
+        case 1:
+            trace.push("one");
+        case 2:
+            trace.push("two");
+            break;
+        case 3:
+            trace.push("three");
+            break;
+        default:
+            trace.push("other");
+    }
+}
+
+label(1);
+label(2);
+label(3);
+label(9);
+
+check(
+    "switch falls through into the next case",
+    trace.join(","),
+    "one,two,two,three,other"
+);
+
+let stopped = [];
+
+function labelBreak(n) {
+    switch n {
+        case 1:
+            stopped.push("a");
+            break;
+        case 2:
+            stopped.push("b");
+            break;
+    }
+
+    stopped.push("after" + str(n));
+}
+
+labelBreak(1);
+labelBreak(2);
+labelBreak(3);
+
+check(
+    "switch break leaves early",
+    stopped.join(","),
+    "a,after1,b,after2,after3"
+);
+
+let onlyDefault = "";
+
+switch 99 {
+    case 1:
+        onlyDefault = "case";
+    default:
+        onlyDefault = "default";
+}
+
+check("switch default runs when nothing matches", onlyDefault, "default");
+
+let noDefault = "";
+
+switch 99 {
+    case 1:
+        noDefault = "case";
+}
+
+check("switch without a match does nothing", noDefault, "");
+
+let empty = [];
+
+switch 1 { case 1: } switch 2 { default: } switch 3 { case 3: }
+
+check("empty switch bodies are allowed", empty.len(), 0);
+
+let words = [];
+
+switch "b" {
+    case "a":
+        words.push("first");
+    default:
+        words.push("middle");
+    case "z":
+        words.push("last");
+}
+
+check("switch matches strings", words.join(","), "middle,last");
+
+let mixed = [];
+
+switch 2 {
+    case 1 + 1:
+        mixed.push("computed");
+    case 2:
+        mixed.push("plain");
+}
+
+check(
+    "switch values can be expressions",
+    mixed.join(","),
+    "computed,plain"
+);
+
+let nested = [];
+
+for (let n in [1, 2]) {
+    switch n {
+        case 1:
+            switch n + 10 {
+                case 11:
+                    nested.push("inner");
+                    break;
+            }
+            nested.push("outer");
+            break;
+    }
+}
+
+check("switch nests", nested.join(","), "inner,outer");
+
+let loopsWithSwitch = 0;
+
+for (let i in range(4)) {
+    switch i {
+        case 1:
+            continue;
+        case 2:
+            break;
+    }
+
+    loopsWithSwitch = loopsWithSwitch + 1;
+}
+
+check("break and continue still reach the loop", loopsWithSwitch, 3);
+
+let captured = [];
+
+for (let n in [1, 2]) {
+    switch n {
+        case 1:
+        case 2:
+            captured.push(function() { return n; });
+    }
+}
+
+check(
+    "switch captures per iteration",
+    captured[0]() + captured[1](),
+    3
+);
+
+
+let who = "nova";
+let props = {age: 7};
+let howMany = 3;
+
+check("a plain hole", "hello {who}", "hello nova");
+check("two holes", "{who} has {howMany}", "nova has 3");
+check("a number becomes text", "count is {howMany}", "count is 3");
+check("a boolean becomes text", "small is {howMany < 4}", "small is true");
+check("an operation inside a hole", "{howMany + 2}", "5");
+check("a call inside a hole", "{[1, 2, 3].join(\"-\")}", "1-2-3");
+check("a property inside a hole", "{props.age}", "7");
+check("a hole with no text around it", "{who}", "nova");
+check("a list inside a hole", "{[1, 2]}", "[1, 2]");
+check("text after a hole", "{who} rules", "nova rules");
+check("an escaped brace", "\{who\}", "\{who\}");
+check("a string inside a hole", "{ "hi" + who }", "hinova");
+
+let greeted = "";
+
+for (let name in ["ada", "lin"]) {
+    greeted = greeted + "hi {name}; ";
+}
+
+check("a hole reads the loop value", greeted, "hi ada; hi lin; ");
+
+let [la, lb, lc] = [1, 2];
+check("a list pattern binds names", la + lb, 3);
+check("a list pattern leaves the rest nil", lc, nil);
+
+let [head, ...tailItems] = [1, 2, 3, 4];
+check("a rest pattern splits the list", head, 1);
+check("a rest pattern collects the tail", tailItems.join(","), "2,3,4");
+
+let {name: who2, size} = {name: "map", size: 3};
+check("a map pattern renames a key", who2, "map");
+check("a map pattern keeps a name", size, 3);
+
+let {missing} = {present: 1};
+check("a missing key is nil", missing, nil);
+
+let [[x1, y1], [z1]] = [[1, 2], [3]];
+check("a nested pattern reads a list", x1 + y1 + z1, 6);
+
+let {outer: {inner}} = {outer: {inner: 9}};
+check("a nested pattern reads a map", inner, 9);
+
+let {items: [firstItem, secondItem]} = {items: [4, 5]};
+check("a mixed pattern reads both", firstItem * secondItem, 20);
+
+let [letters3, ...rest3] = "abc";
+check("a string splits into characters", letters3, "a");
+check("a string rest is a list", rest3.join(""), "bc");
+
+let [, , thirdOnly] = [1, 2, 3];
+check("a skipped slot keeps positions", thirdOnly, 3);
+
+let [p1, , p3] = [1, 2, 3];
+check("a hole in the middle skips", p1 * p3, 3);
+
+let [q1, q2,] = [1, 2];
+check("a trailing comma is fine", q1 + q2, 3);
+
+let {a: _, b: onlyKey} = {a: 1, b: 2};
+check("an underscore skips a key", onlyKey, 2);
+
+function patternSum(values) {
+    let total = 0;
+    for (let pair in values) {
+        let [a, b] = pair;
+        total = total + a + b;
+    }
+    return total;
+}
+
+check("a pattern works in a function", patternSum([[1, 2], [3, 4]]), 10);
+
+let patternClosure = function() {
+    let [ca, cb] = [2, 3];
+    return function() { return ca * cb; };
+}();
+
+check("a pattern can be captured", patternClosure(), 6);
+
+let shadow = 100;
+
+if true {
+    let [shadow] = [1];
+    check("a pattern shadows inside a block", shadow, 1);
+}
+
+check("a shadowed pattern leaves the outer name alone", shadow, 100);
+
+let outerList = [1, 2, 3];
+let [, ...outerRest] = outerList;
+outerRest.push(4);
+check("a rest list copies", outerList.len(), 3);
+check("a rest list can change", outerRest.join(","), "2,3,4");
+
+let notes = "/tmp/nova_language_test.txt";
+
+writeFile(notes, "alpha\nbeta\n");
+appendFile(notes, "gamma\n");
+
+let lines = readFile(notes).trim().split("\n");
+
+check("writeFile and readFile", lines.len(), 3);
+check("lines have text", lines[1], "beta");
+check("appendFile added a line", lines[2], "gamma");
+check("fileExists finds it", fileExists(notes), true);
+check("readFile finds text", readFile(notes).contains("beta"), true);
+check("removeFile clears it", removeFile(notes), true);
+check("fileExists after removal", fileExists(notes), false);
+check("removeFile again is false", removeFile(notes), false);
+
+check("ping finds loopback", ping("127.0.0.1", 500), true);
+
+check("ping finds nothing on an unused range", ping("192.0.2.1", 120), false);
+check("lookup of localhost", lookup("localhost").contains("127.0.0.1"), true);
+check("lookup of an unknown name", len(lookup("no-such-host.invalid")), 0);
+check("scan of an unused range", len(scan("192.0.2.", 10, 12, 120)), 0);
+check("scanDetail of an unused range", len(scanDetail("192.0.2.", 10, 11, 120)), 0);
+
+class Point {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    sum() {
+        return this.x + this.y;
+    }
+
+    toString() {
+        return "Point(" + str(this.x) + "," + str(this.y) + ")";
+    }
+}
+
+class Point3 extends Point {
+    constructor(x, y, z) {
+        super(x, y);
+        this.z = z;
+    }
+
+    sum() {
+        return super.sum() + this.z;
+    }
+}
+
+let point = new Point(2, 3);
+check("class field", point.x, 2);
+check("class method", point.sum(), 5);
+check("class toString", str(point), "Point(2,3)");
+
+let point3 = new Point3(1, 2, 3);
+check("inherited field", point3.x, 1);
+check("super method", point3.sum(), 6);
+
+let caught = "";
+try {
+    throw "boom";
+} catch problem {
+    caught = problem;
+}
+check("catch value", caught, "boom");
+
+let flag = 0;
+try {
+    flag = 1;
+} finally {
+    flag = flag + 1;
+}
+check("finally runs", flag, 2);
+
+if failed == 0 {
+    print("all", passed, "checks passed");
+} else {
+    error(str(failed) + " checks failed");
+}

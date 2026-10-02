@@ -1,0 +1,12 @@
+short list: 1 2 nil
+head: 10
+tail: [20, 30, 40]
+third slot: 3
+renamed key: nova
+plain key: 3
+missing key: nil
+nested: 42
+mixed: 15
+string: x y
+pairs: 10
+closure: 2 4

@@ -1,0 +1,14 @@
+counter: 17
+counters are independent: 17 and 100
+
+81
+81
+144
+
+NOVA!
+applyAll: 10 20 30
+each closure keeps its own counter: 1 2 3
+
+fib(20): 6765
+fact(10): 3628800
+deep(500): bottom

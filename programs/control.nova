@@ -1,0 +1,12 @@
+let x = 10;
+
+if (x >= 10) {
+    print("condition works");
+}
+
+while (x < 15) {
+    print(x);
+    x = x + 1;
+}
+
+print("done");

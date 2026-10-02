@@ -1,0 +1,6 @@
+import "math.nova" as math;
+import "math.nova" as again;
+
+print(math.square(6));
+print(again.name);
+print(math.square(2) + math.square(3));

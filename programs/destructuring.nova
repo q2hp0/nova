@@ -1,0 +1,48 @@
+let [first, second, third] = [1, 2];
+print("short list:", first, second, third);
+
+let [head, ...tail] = [10, 20, 30, 40];
+print("head:", head);
+print("tail:", tail);
+
+let [, , last] = [1, 2, 3];
+print("third slot:", last);
+
+let {name: title, count} = {name: "nova", count: 3};
+print("renamed key:", title);
+print("plain key:", count);
+
+let {missing} = {present: 1};
+print("missing key:", missing);
+
+let {outer: {inner}, list: [p, q]} = {outer: {inner: 42}, list: [7, 8]};
+print("nested:", inner);
+print("mixed:", p + q);
+
+let [a, b] = "xy";
+print("string:", a, b);
+
+function total(values) {
+    let sum = 0;
+
+    for (let pair in values) {
+        let [x, y] = pair;
+        sum = sum + x + y;
+    }
+
+    return sum;
+}
+
+print("pairs:", total([[1, 2], [3, 4]]));
+
+let makeCounter = function() {
+    let [start, step] = [0, 2];
+    return function() {
+        start = start + step;
+        return start;
+    };
+};
+
+let counter = makeCounter();
+
+print("closure:", counter(), counter());

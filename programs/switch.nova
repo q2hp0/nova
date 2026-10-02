@@ -1,0 +1,77 @@
+function season(month) {
+    switch month {
+        case 12:
+        case 1:
+        case 2:
+            return "winter";
+        case 3:
+        case 4:
+        case 5:
+            return "spring";
+        case 6:
+        case 7:
+        case 8:
+            return "summer";
+        default:
+            return "autumn";
+    }
+}
+
+for (let month in [1, 4, 7, 10]) {
+    print(month, season(month));
+}
+
+let traffic = "green";
+
+switch traffic {
+    case "red":
+        print("stop");
+        break;
+    case "green":
+        print("go");
+        break;
+    case "amber":
+        print("slow down");
+        break;
+}
+
+function grade(score) {
+    switch true {
+        case score >= 90:
+            return "A";
+        case score >= 80:
+            return "B";
+        case score >= 70:
+            return "C";
+        default:
+            return "F";
+    }
+}
+
+for (let score in [95, 85, 72, 40]) {
+    print(score, grade(score));
+}
+
+let found = "";
+
+switch "beta" {
+    case "alpha":
+        found = found + "1";
+    default:
+        found = found + "2";
+    case "gamma":
+        found = found + "3";
+}
+
+print("fall through gave", found);
+
+let sum = 0;
+
+for (let n in [1, 2, 3, 4, 5]) {
+    switch n % 2 {
+        case 0:
+            sum = sum + n;
+    }
+}
+
+print("even total", sum);

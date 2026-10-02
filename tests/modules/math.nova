@@ -1,0 +1,10 @@
+export square;
+export name;
+
+function square(n) {
+    return n * n;
+}
+
+let name = "math";
+
+print("math loaded");

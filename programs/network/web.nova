@@ -1,0 +1,24 @@
+let site = "example.com";
+
+print("looking up " + site);
+print("addresses:", lookup(site).join(", "));
+print("");
+
+print("is it up:", ping(site, 2000));
+print("is port 80 open:", ping(site, 2000, 80));
+print("is port 9999 open:", ping(site, 1000, 9999));
+print("");
+
+print("a name that does not exist:", ping("no-such-host.invalid", 500));
+print("");
+
+print("fetching the front page");
+let page = get("http://" + site + "/");
+
+print("the page is", len(page), "bytes long");
+print("it starts with:", page.trim().substring(0, 40));
+print("it speaks html:", page.lower().contains("<html"));
+print("");
+
+print("https is not supported yet:");
+print(get("https://" + site + "/"));

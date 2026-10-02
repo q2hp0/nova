@@ -1,0 +1,29 @@
+let prefix = "192.168.0.";
+let first = 1;
+let last = 254;
+
+let timeout = 400;
+let jobs = 32;
+
+print("scanning " + prefix + str(first) + " to " + prefix + str(last));
+print("timeout " + str(timeout) + "ms with " + str(jobs) + " workers");
+print("");
+
+let hosts = scanDetail(prefix, first, last, timeout, 0, jobs);
+
+print("found " + str(len(hosts)) + " live hosts");
+print("");
+
+for (let host in hosts) {
+    print("  " + host.ip + "  port " + str(host.port));
+}
+
+writeFile("/tmp/nova_scan.txt", "found " + str(len(hosts)) + " hosts\n");
+
+for (let host in hosts) {
+    appendFile("/tmp/nova_scan.txt", host.ip + "\n");
+}
+
+print("");
+print("the list was written to /tmp/nova_scan.txt");
+print(readFile("/tmp/nova_scan.txt"));

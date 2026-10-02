@@ -1,0 +1,28 @@
+let name = "nova";
+
+print("hello {name}");
+
+let count = 3;
+let quiet = count < 2;
+
+print("{name} holds {count} values, quiet is {quiet}");
+print("sorted: {[3, 1, 2].sort().join(" < ")}");
+print("a string inside a hole: { "hi " + name }");
+print("braces stay when you write \{ and \}");
+print("a hole inside a hole: { "[" + name + "]" }");
+
+let rows = [{city: "Cairo", temp: 31}, {city: "Rabat", temp: 24}];
+
+for (let row in rows) {
+    print("{row.city} is {row.temp} degrees");
+}
+
+function greet(who) {
+    return "hello {who}, and the answer is {1 + 1}";
+}
+
+print(greet("reader"));
+
+let label = "total";
+
+print("{label}: {2 + 3 * 4}");

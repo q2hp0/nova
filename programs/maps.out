@@ -1,0 +1,20 @@
+people: ada, linus
+ada is 36 and likes math and logic
+linus is 54 and likes c and linux
+
+ada knows math: true
+ada knows rust: false
+after adding grace: 3
+ages: 36, 54, 45
+youngest: 36
+oldest: 54
+
+keys are sorted, not hashed: math | logic
+missing keys give nil: true
+membership check: true
+size method: 3
+after remove: ada, linus
+
+matrix: [[1, 2], [3, 4]]
+row 2 item 1: 3
+flattened: 1 2 / 3 4

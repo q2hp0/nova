@@ -1,0 +1,51 @@
+let people = {
+    "ada": {"age": 36, "langs": ["math", "logic"]},
+    "linus": {"age": 54, "langs": ["c", "linux"]}
+};
+
+print("people:", people.keys().join(", "));
+
+for (let name in people.keys()) {
+    let person = people[name];
+
+    print(name, "is", person["age"], "and likes", person["langs"].join(" and "));
+}
+
+print("");
+print("ada knows math:", people["ada"]["langs"].contains("math"));
+print("ada knows rust:", people["ada"]["langs"].contains("rust"));
+
+people["grace"] = {"age": 45, "langs": ["cobol", "compilers"]};
+print("after adding grace:", people.len());
+
+let ages = people.keys().map(function(name) {
+    return people[name]["age"];
+});
+
+print("ages:", ages.join(", "));
+print("youngest:", ages.min());
+print("oldest:", ages.max());
+
+let counted = {};
+
+for (let lang in people["ada"]["langs"]) {
+    counted[lang] = 1;
+}
+
+print("");
+print("keys are sorted, not hashed:", counted.keys().join(" | "));
+print("missing keys give nil:", people["nobody"] == nil);
+print("membership check:", people.contains("grace"));
+print("size method:", people.size());
+
+people.remove("grace");
+print("after remove:", people.keys().join(", "));
+
+let matrix = [[1, 2], [3, 4]];
+
+print("");
+print("matrix:", matrix);
+print("row 2 item 1:", matrix[1][0]);
+print("flattened:", matrix.map(function(row) {
+    return row.join(" ");
+}).join(" / "));

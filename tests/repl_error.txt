@@ -1,0 +1,6 @@
+nova: line 1:0 unknown variable 'nosuchvariable'
+trace:
+  in repl at line 1
+nova: line 1:0 division by zero
+trace:
+  in repl at line 1

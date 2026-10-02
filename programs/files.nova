@@ -1,0 +1,40 @@
+let path = "/tmp/nova_notes.txt";
+
+print("writing notes");
+writeFile(path, "first line\nsecond line\n");
+
+print("the file has", len(readFile(path)), "bytes");
+print("it starts with:", readFile(path).split("\n")[0]);
+
+appendFile(path, "third line\n");
+
+let lines = readFile(path).trim().split("\n");
+
+print("");
+print("the file holds", len(lines), "lines");
+
+let number = 0;
+
+for (let line in lines) {
+    number = number + 1;
+    print("  " + str(number) + ". " + line);
+}
+
+print("");
+print("it holds 'second':", readFile(path).contains("second"));
+print("it holds 'missing':", readFile(path).contains("missing"));
+
+let report = "/tmp/nova_report.txt";
+
+writeFile(report, "lines=" + str(len(lines)) + " first=" + lines[0] + "\n");
+
+print("");
+print("report says:", readFile(report).trim());
+
+print("exists before:", fileExists(report));
+print("removed:", removeFile(report));
+print("exists after:", fileExists(report));
+print("removing it again:", removeFile(report));
+
+print("");
+print("done");

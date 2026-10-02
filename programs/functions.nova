@@ -1,0 +1,52 @@
+function add(a, b) {
+    return a + b;
+}
+
+function fib(n) {
+    if (n < 2) {
+        return n;
+    }
+
+    return fib(n - 1) + fib(n - 2);
+}
+
+function makeCounter() {
+    let count = 0;
+
+    function step() {
+        count = count + 1;
+        return count;
+    }
+
+    return step;
+}
+
+print(add(3, 4));
+print(fib(10));
+
+let counter = makeCounter();
+print(counter());
+print(counter());
+print(counter());
+
+let total = 0;
+
+for (let i = 1; i <= 5; i = i + 1) {
+    total = total + i;
+}
+
+print("total", total);
+
+let words = ["alpha", "beta", "gamma"];
+
+for (let word in words) {
+    print(word.upper());
+}
+
+print(words.join("-"));
+
+let doubled = words.map(function(word) {
+    return word + "!";
+});
+
+print(doubled);

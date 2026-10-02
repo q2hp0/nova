@@ -1,0 +1,72 @@
+// Classes, inheritance, fields, methods, statics and polymorphism.
+
+class Shape {
+    constructor(name) {
+        this.name = name;
+    }
+
+    area() {
+        return 0;
+    }
+
+    describe() {
+        return this.name + " has area " + str(this.area());
+    }
+
+    toString() {
+        return "Shape(" + this.name + ")";
+    }
+}
+
+class Rectangle extends Shape {
+    static of(w, h) {
+        return new Rectangle(w, h);
+    }
+
+    constructor(w, h) {
+        super("rectangle");
+        this.w = w;
+        this.h = h;
+    }
+
+    area() {
+        return this.w * this.h;
+    }
+}
+
+class Square extends Rectangle {
+    constructor(side) {
+        super(side, side);
+        this.name = "square";
+    }
+}
+
+let box = Rectangle.of(3, 4);
+print(box.describe());
+print(box.area());
+
+let square = new Square(5);
+print(square.describe());
+print(type(square));
+
+class Counter {
+    constructor() {
+        this.count = 0;
+    }
+
+    static zero() {
+        return new Counter();
+    }
+
+    bump() {
+        this.count = this.count + 1;
+        return this.count;
+    }
+}
+
+let counter = Counter.zero();
+print(counter.bump(), counter.bump(), counter.bump());
+
+class Empty {}
+let empty = new Empty();
+print(type(empty), empty);

@@ -1,0 +1,24 @@
+let greeting = "hello";
+greeting + " world"
+1 + 2 * 3
+[10, 20, 30].map(function(n) {
+    return n / 10;
+}).join(" ")
+{
+    let inside = 5;
+    print(inside * 2);
+}
+function twice(fn, value) {
+    return fn(fn(value));
+}
+twice(function(n) { return n + 3; }, 1)
+let table = {"a": 1};
+table.b = 2;
+table
+len([1, 2, 3])
+for (let n in range(3)) {
+    print(n * n);
+}
+nosuchvariable
+1 / 0
+exit

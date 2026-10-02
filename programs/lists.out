@@ -1,0 +1,24 @@
+shopping list
+------------
+APPLE
+BANANA
+CHERRY
+
+items: 3
+total: 9.75
+cheapest: 2
+most expensive: 4.25
+average: 3.25
+after push: apple, banana, cherry, date
+sorted prices: 2 < 3.5 < 4.25
+long words: banana, cherry
+lengths: apple=5, banana=6, cherry=6, date=4
+concatenated: applebananacherrydate
+original: apple, banana, cherry, date
+reversed copy: apple, banana, cherry, date
+changed copy: fig
+original first: apple
+
+numbers as a list: 1 2 3 4 5
+stepped range: 0 5 10 15
+sum of squares: 30

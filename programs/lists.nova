@@ -1,0 +1,56 @@
+let words = ["apple", "banana", "cherry"];
+let prices = [3.5, 2, 4.25];
+
+print("shopping list");
+print("------------");
+
+for (let word in words) {
+    print(word.upper());
+}
+
+let total = sum(prices);
+
+print("");
+print("items:", words.len());
+print("total:", total);
+print("cheapest:", prices.min());
+print("most expensive:", prices.max());
+print("average:", round((total / prices.len()) * 100) / 100);
+
+words.push("date");
+print("after push:", words.join(", "));
+
+let sorted = prices.sort();
+print("sorted prices:", sorted.join(" < "));
+
+let long = words.filter(function(word) {
+    return len(word) > 5;
+});
+
+print("long words:", long.join(", "));
+
+let lengths = words.map(function(word) {
+    return word + "=" + len(word);
+});
+
+print("lengths:", lengths.join(", "));
+
+let joined = words.reduce(function(all, word) {
+    return all + word;
+}, "");
+
+print("concatenated:", joined);
+
+let copy = words.copy();
+copy.reverse();
+print("original:", words.join(", "));
+print("reversed copy:", copy.join(", "));
+
+copy[0] = "fig";
+print("changed copy:", copy[0]);
+print("original first:", words[0]);
+
+print("");
+print("numbers as a list:", range(1, 6).join(" "));
+print("stepped range:", range(0, 20, 5).join(" "));
+print("sum of squares:", sum(range(1, 5).map(function(x) { return x * x; })));

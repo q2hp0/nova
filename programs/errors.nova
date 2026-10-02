@@ -1,0 +1,29 @@
+function divide(a, b) {
+    if (b == 0) {
+        throw "division by zero";
+    }
+
+    return a / b;
+}
+
+try {
+    print(divide(10, 2));
+    print(divide(1, 0));
+    print("never reached");
+} catch problem {
+    print("caught:", problem);
+} finally {
+    print("cleanup done");
+}
+
+try {
+    try {
+        throw "inner";
+    } finally {
+        print("always runs");
+    }
+} catch problem {
+    print("outer caught:", problem);
+}
+
+print("after finally");
